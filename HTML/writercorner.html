@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writer Corner</title>
+    <link rel="stylesheet" href="../CSS/writercorner.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    // put your web app's Firebase configuration
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+onAuthStateChanged(auth, (user) => {
+    if (!user || !user.emailVerified) {
+        window.location.href = "site.html";
+    }
+});
+    </script>
+</head>
+<body>
+    <div class="writer-corner-container">
+        <h1>Writer Corner</h1>
+        <form id="writer-form" name="f">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter the book title" required>
+            </div>
+            <div class="form-group">
+                <label for="type">Type of Book</label>
+                <select id="type" name="type" required>
+                    <option value="" disabled selected>Select the type</option>
+                    <option value="fiction">Fiction</option>
+                    <option value="non-fiction">Non-Fiction</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="mystery">Mystery</option>
+                    <option value="romance">Romance</option>
+                    <option value="science-fiction">Science Fiction</option>
+                    <option value="biography">Biography</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Short Description</label>
+                <textarea id="description" name="description" rows="3" placeholder="Write a brief description of the story" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="author">Author Name</label>
+                <input type="text" id="author" name="author" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" placeholder="0" min="0" step="1" required value="0" disabled>
+            </div>
+            <div class="form-group">
+                <label for="file">Upload Book File</label>
+                <input type="file" id="file" name="file" accept=".pdf,.doc,.docx" required>
+            </div>
+            <div class="form-group">
+                <label for="cover">Upload Cover Image</label>
+                <input type="file" id="cover" name="cover" accept=".jpg,.jpeg,.png" required>
+            </div>
+            <button type="button" id="btn">Upload the book</button>
+        </form>
+        <div id="content-list"></div>
+    </div>
+
+    <!-- Include the JavaScript file -->
+    <script type="module" src="../JS/writercorner.js"></script>
+</body>
+</html>

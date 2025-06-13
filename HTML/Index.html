@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>BookHive</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .intro-container {
+            background-color: #2c3e50;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .intro-container img {
+            max-width: 400px; /* Adjust this value to control the image width */
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            width: 50%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(to right, white, orange 50%, darkorange);
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-container">
+        <img src="../SRC/circle.png" alt="Logo">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var progressBar = document.getElementById("progress-bar");
+            var width = 1;
+            var interval = setInterval(increaseWidth, 50); // Increase width every 50 milliseconds
+
+            function increaseWidth() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Redirect to the home page after the progress bar fills
+                    setTimeout(function() {
+                        window.location.href = "../HTML/site.html"; // Replace with your home page URL
+                    }, 1000); // Delay in milliseconds before redirection (1 second in this example)
+                } else {
+                    width++;
+                    progressBar.style.width = width + "%";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

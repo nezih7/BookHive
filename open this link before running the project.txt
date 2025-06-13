@@ -1,0 +1,2 @@
+open this demo server before opening the project:https://cors-anywhere.herokuapp.com/corsdemo
+run this project on a local server for a better experience

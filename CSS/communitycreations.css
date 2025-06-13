@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* ===== Video Background ===== */
+#bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    filter: blur(3px);
+    
+
+}
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #f39c12;
+    text-align: center;
+    margin-top: 15px;
+}
+
+header h2 {
+    height: 50px;
+    margin: 5px 0 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+#work {
+    margin-left: 13px;
+    display: flex; /* Use Flexbox for layout */
+    justify-content: flex-start; /* Align content to the left */
+    align-items: flex-start; /* Align items to the top */
+    height: 75%; /* Fixed height */
+    padding: 20px; /* Add padding inside the container */
+    width: 95.5%; /* Fixed width */
+    text-align: left; /* Align text to the left */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    backdrop-filter: blur(5px); /* Blur effect */
+    margin-bottom: 20px; /* Space below the div */
+    overflow: auto; /* Add scrollbars if content overflows */
+    gap: 70px;
+}
+.book-card {
+    width: 150px;
+    height: 180px; /* Increase the width of the book card */
+    text-align: center; /* Center-align text inside the card */
+    background-color: rgba(60, 60, 60, 0.8); /* Dark gray but softer than before */  
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Add padding inside the card */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+    transition: transform 0.2s ease; /* Add a hover effect for the card */
+}
+.book-card img:hover {
+    transform: scale(1.1); /* Slightly enlarge the image on hover */
+}
+.book-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card on hover */
+}
+.book-title {
+    margin-top: 10px; /* Add space above the title */
+    font-size: 1.1rem; /* Slightly increase the font size for the title */
+    color: white; /* Set text color */
+    font-weight: bold; /* Make the title bold */
+    text-align: center; /* Center-align the title */
+}
+.book-cover {
+    width: 100%; /* Make the image fill the card width */
+    height: 150px; /* Increased height for the image */
+    object-fit: cover; /* Ensure the image maintains its aspect ratio */
+    border-radius: 8px; /* Rounded corners for the image */
+    cursor: pointer; /* Indicate that the image is clickable */
+    transition: transform 0.2s ease; /* Add a hover effect */
+}
+
+.book-cover:hover {
+    transform: scale(1.05); /* Slightly enlarge the image on hover */
+}
+footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-top: 2px solid #f39c12;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    
+}
+
+footer p {
+    margin: 0;
+    font-weight: bold;
+}

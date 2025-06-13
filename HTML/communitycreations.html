@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BookHive-Community Creations</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="../CSS/communitycreations.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+        const firebaseConfig = {
+            //put your Firebase config here
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user || !user.emailVerified) {
+                window.location.href = "site.html";
+            } else {
+                console.log("User is signed in and email is verified.");
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <video autoplay muted loop id="bgVideo">
+        <source src="../SRC/libback.mp4" type="video/mp4">
+    </video>
+    <header>
+        <h1>Community Creations</h1>
+        <h2>Explore books uploaded by our amazing community!</h2>
+    </header>
+
+    <main id="content">
+        <div id="communityCreations" class="community-creations">
+        </div>
+    </main>
+    <div id="work">
+        loading
+    </div>
+    <footer>
+        <p id="Readc">© 2025 BookHive. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite"></script>
+    <script>
+        const client = new Appwrite.Client();
+        const database = new Appwrite.Databases(client);
+
+        client
+            .setEndpoint("https://cloud.appwrite.io/v1")
+            .setProject("put your Appwrite project ID here"); // Updated Appwrite project ID
+
+        async function fetchRecommendations() {
+            try {
+                const response = await database.listDocuments(
+                    'put your Appwrite database ID here', // Replace with your Appwrite database ID
+                    'put your Appwrite collection ID here' // Replace with your Appwrite collection ID
+                );
+
+                displayBooks(response.documents);
+            } catch (error) {
+                console.error("Error fetching recommendations:", error);
+                document.getElementById("work").innerHTML = "<p>Error loading recommendations.</p>";
+            }
+        }
+
+        function displayBooks(books) {
+    const workDiv = document.getElementById("work");
+    workDiv.innerHTML = ""; // Clear previous content
+    books.forEach((book) => {
+        const bookCard = `
+            <div class="book-card">
+                <img src="${book.coverImageURL}" alt="${book.title}" class="book-cover" data-book='${JSON.stringify(book)}'>
+                <h3 class="book-title">${book.title}</h3>
+            </div>
+        `;
+        workDiv.innerHTML += bookCard;
+    });
+
+    // Add click event listeners to all book images
+    const bookImages = document.querySelectorAll(".book-cover");
+    bookImages.forEach((img) => {
+        img.addEventListener("click", (e) => {
+            const bookData = JSON.parse(e.target.getAttribute("data-book"));
+            // Store book data in localStorage
+            localStorage.setItem("selectedBook", JSON.stringify(bookData));
+            // Redirect to the book details page
+            window.location.href = "bookdetails.html";
+        });
+    });
+}
+
+        // Fetch and display books on page load
+        document.addEventListener("DOMContentLoaded", fetchRecommendations);
+    </script>
+</body>
+</html>

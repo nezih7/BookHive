@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BookHive - Favorites</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="../CSS/favorites.css">
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+        const firebaseConfig = {
+            //put your Firebase config here
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const favoritesDiv = document.getElementById("favorites");
+            favoritesDiv.innerHTML = '<div class="loader">Loading...</div>';
+
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = "site.html";
+                    return;
+                }
+
+                try {
+                    const userRef = ref(db, `Users/${user.uid}`);
+                    const userSnapshot = await get(userRef);
+
+                    if (!userSnapshot.exists()) {
+                        favoritesDiv.innerHTML = "<p>No user data found.</p>";
+                        return;
+                    }
+
+                    const username = userSnapshot.val().username;
+                    const favBooksRef = ref(db, `favbooks/${username}`);
+                    const favBooksSnapshot = await get(favBooksRef);
+
+                    if (!favBooksSnapshot.exists()) {
+                        favoritesDiv.innerHTML = "<p>No favorite books found.</p>";
+                        return;
+                    }
+
+                    const favBooks = Object.values(favBooksSnapshot.val());
+                    favoritesDiv.innerHTML = favBooks.map(book => `
+                        <div class="book-card" data-book='${JSON.stringify(book)}'>
+                            <img src="${book.bookCover}" alt="Book Cover" />
+                            <div class="book-info">
+                                <h3>${book.bookTitle}</h3>
+                                <p><strong>Author:</strong> ${book.bookAuthor}</p>
+                                <p><strong>Type:</strong> ${book.bookType || "Unknown"}</p>
+                            </div>
+                        </div>
+                    `).join("");
+
+                    // Add click event AFTER injection
+                    document.querySelectorAll(".book-card").forEach(card => {
+                     card.addEventListener("click", () => {
+                    try {
+                        const bookData = JSON.parse(card.getAttribute("data-book"));
+                        localStorage.setItem("selectedBook", JSON.stringify(bookData));
+                        window.location.href = "bookdetails.html";
+                    } catch (error) {
+                        console.error("Error parsing the book data:", error);
+                        console.log("Invalid data:", card.getAttribute("data-book"));
+                    }
+                });
+});
+
+
+                } catch (error) {
+                    console.error("Error loading favorites:", error);
+                    favoritesDiv.innerHTML = "<p>Error loading books. Please try again later.</p>";
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- Background Video -->
+    <video autoplay muted loop id="bgVideo">
+        <source src="../SRC/libback.mp4" type="video/mp4">
+    </video>
+
+    <!-- Page Header -->
+    <header>
+        <h1>Favorites</h1>
+        <h2>Your favorite books will appear here</h2>
+    </header>
+
+    <!-- Main Section -->
+    <main id="content">
+        <div id="work">
+            <!-- Book cards will be injected here -->
+            <div id="favorites" class="book-grid"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p id="Readc">© 2025 BookHive. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

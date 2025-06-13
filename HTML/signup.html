@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../CSS/sign.css">
+    <script type="text/javascript" src="../JS/signup.js" defer></script>
+    <title>Sign up</title>
+</head>
+<body>
+
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <form action="#" method="POST" name="f">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required pattern="^[a-zA-Z0-9]{5,12}$">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="db">Date of Birth</label>
+                <input type="date" id="db" name="db" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="pwd" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <input type="button" id="1b" onclick="su()" value="Sign Up">
+        </form>
+
+        <!-- Replace your current Firebase script with this -->
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    import { getDatabase, ref, set,child,get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+    import { 
+        getAuth, 
+        createUserWithEmailAndPassword,
+        sendEmailVerification 
+    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        //put your Firebase config here
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Make these available to your signup.js
+    window.firebaseAuth = auth;
+    window.firebaseDatabase = db;
+    window.firebaseFunctions = {
+        createUserWithEmailAndPassword,
+        sendEmailVerification,
+        ref, 
+        set,
+        child,
+        get
+    };
+</script>
+    </div>
+
+    <footer>
+        <p id="Readc">&copy; 2025 BookHive. All rights reserved.</p>
+    </footer>
+</body>
+</html>

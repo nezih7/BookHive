@@ -1,0 +1,534 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #34302E;
+    margin: 0;
+    padding: 0;
+    padding-top: 100px;
+}
+
+/* Header Section */
+#header-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #34302E;
+    padding: 15px 40px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#header-section img {
+    width: 80px;
+    height: auto;
+}
+
+.nav-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+nav {
+    display: flex;
+    gap: 50px;
+}
+
+.bt {
+    color: white;
+    font-size: 22px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.bt:hover {
+    color: #f39c12;
+}
+
+
+
+/* Welcome Section */
+#welcome {
+    position: relative;
+    width: 100%; /* Adjust as needed */
+    height: auto; /* Adjust as needed */
+}
+#image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+#Description-wl {
+    position: absolute;
+    top: 50%;
+    left: 25%; 
+    transform: translate(-50%, -50%); 
+    text-align: left;
+    color: white;
+    width: 80%; 
+    max-width: 600px; 
+}
+.dwc {
+    margin: 10px 0; 
+}
+
+/* Login Form Section */
+#work {
+    position: absolute;
+    top: 10%; /* Adjust to center vertically */
+    left: 77%; /* Positioned to the right */
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(249, 249, 249, 0.7); /* White background with 0.7 opacity */
+    height: 400px;
+}
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 60px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.email-icon, .password-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Adjust based on your icon size */
+    height: 20px; /* Adjust based on your icon size */
+}
+
+.email-icon {
+    background: url("../SRC/email.png") no-repeat center;
+    background-size: cover;
+    margin-top: -100px;
+}
+
+.password-icon {
+    background: url("../SRC/key.png") no-repeat center;
+    background-size: cover;
+    width: 20px; /* Adjust as per your design */
+    height: 20px; /* Adjust as per your design */
+    margin-top: -14px;
+}
+.f1 {
+    font-weight: bold;
+    color: black;
+    font-size: 17px;
+}
+.f11 {
+    padding: 10px;
+    padding-right:40px ;
+    border: 1px solid #ccc;
+    border-radius: 14px;
+    font-size: 16px;
+}
+.f11:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+#b1 {
+    padding: 10px 20px;
+    color: black;
+    font: bold;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #BD942F;
+}
+#b1:hover {
+    background-color: #7C5E13;
+}
+.forgot-password {
+    text-align: center;
+    font-size: 16px;
+    color: #A7001E; /* Deep red color */
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    margin-top: 10px; /* Added spacing */
+}
+
+.forgot-password:hover {
+    color: #7C5E13; /* Darker shade on hover */
+    text-decoration: underline;
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.forgot-password a {
+    color: inherit; /* Inherits the color from .forgot-password */
+    text-decoration: none; /* Removes underline by default */
+}
+
+.forgot-password a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+.signup-prompt {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+    color: black;
+}
+.signup-prompt a {
+    color: #A7001E;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-prompt a:hover {
+    text-decoration: underline;
+}
+
+
+/* reading corner */
+
+
+#rc {
+    margin-top: 50px;
+    background-color: #211F1D;
+    padding: 10px 0;
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 33px;
+    height: 750px;
+
+}
+#lib {
+    color: white;
+    font-size: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+.book-carousel {
+    position: relative;
+    width: 80%;
+    max-width: 1200px; 
+    margin: 0 auto;
+    overflow: hidden;
+}
+.wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+.item {
+    min-width: calc(25% - 10px); 
+    height: 450px; 
+    text-align: center;
+    line-height: 450px; 
+    background: #f39c12;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    margin: 0 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    overflow: hidden;
+}
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.item:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 18px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+.scroll-button.left {
+    left: 10px;
+}
+.scroll-button.right {
+    right: 10px;
+}
+/* bookbridge */
+#bb {
+    position: relative;
+    text-align: center;
+    background: url("../SRC/bookbridge.jpg") no-repeat center center;
+    background-size: cover;
+    padding: 40px;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 1382px;
+    height: 300px;
+    overflow: hidden;
+    margin-left: 10px;
+    margin-right: 15px;
+    margin-top: 50px;
+}
+#bb::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(10px); 
+    border-radius: 33px;
+    z-index: 1;
+}
+#bb * {
+    position: relative;
+    z-index: 2; 
+}
+.dwc p {
+    color: #f39c12;
+    font-size: 50px;
+    margin: 0;
+}
+
+form {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    font-size: 16px;
+    border: 2px solid #f39c12;
+    border-radius: 25px;
+    outline: none;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+input[type="text"]::placeholder {
+    color: #7f8c8d;
+}
+
+.search-icon {
+    position: absolute;
+    right: -232px; 
+    top: -19px;
+    transform: translateY(-50%); 
+    color: #f39c12;
+    font-size: 20px; 
+    cursor: pointer; 
+    transition: color 0.3s ease, transform 0.3s ease; 
+}
+.search-icon:hover {
+    color: #e67e22;
+    transform: translateY(-50%) scale(1.1); 
+}
+
+
+/* text trace */
+
+
+#tt {
+    position: relative;
+    text-align: center;
+    background: url("../SRC/texttrace.jpg") no-repeat center center;
+    background-size: cover;
+    padding: 40px;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 1382px;
+    height: 300px;
+    overflow: hidden;
+    margin-left: 10px;
+    margin-right: 15px;
+    margin-top: 50px;
+}
+
+#tt * {
+    position: relative;
+    z-index: 2; 
+}
+#trace-desc {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* Contact Section */
+
+
+#ct {
+    position: relative;
+    text-align: center;
+    background: url("../SRC/contactus.jpg") no-repeat center center;
+    background-size: cover;
+    padding: 40px;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 1382px;
+    height: 700px;
+    overflow: hidden;
+    margin-left: 10px;
+    margin-right: 15px;
+    margin-top: 50px;
+}
+
+#ct::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for better contrast */
+    backdrop-filter: blur(10px);
+    border-radius: 33px;
+    z-index: 1;
+}
+
+#ct * {
+    position: relative;
+    z-index: 2;
+}
+
+#ct h2 {
+    font-size: 50px;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+#contact-desc {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Contact Form */
+
+
+
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; 
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px; 
+    border-radius: 20px; 
+    backdrop-filter: blur(10px);
+}
+.form-groupe {
+    width: 100%;
+    margin-bottom: 15px;
+    position: relative;
+}
+.form-groupe input, 
+.form-groupe textarea {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background: white;
+}
+
+.form-groupe input:focus, 
+.form-groupe textarea:focus {
+    outline: 2px solid #f39c12;
+}
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+#contact-submit {
+    margin-left: 20px;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    color: white;
+    background: #f39c12;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#contact-info {
+    margin-left: -30px;
+    margin-top: 20px;
+    display: inline-flex; /* Makes elements sit next to each other */
+    align-items: center; /* Vertically aligns the elements */
+}
+
+/* Paragraph styling for contact info */
+#contact-info p {
+    font-size: 20px;
+    color: white;
+    margin: 0 15px; /* Increased space between text and icons */
+    line-height: 7;
+}
+
+/* Icon styling */
+#contact-info i {
+    color: #f39c12;
+    margin-right: 15px; /* Increased space between icon and text */
+    font-size: 24px;
+}
+
+
+
+
+/* Footer Section */
+
+
+footer {
+    background-color: #211F1D;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    border-top: 2px solid #f39c12; 
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); 
+    font-size: 16px; 
+}
+footer p {
+    margin: 0;
+    font-weight: bold; 
+}
+
+

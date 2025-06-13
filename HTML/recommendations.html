@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BookHive - Recommendations</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="../CSS/recommendations.css">
+    <script type="text/javascript" src="../JS/recommendations.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+        const firebaseConfig = {
+            // put your Firebase config here
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let my_list = [];
+        let old_list = [];
+        let x = [];
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user || !user.emailVerified) {
+                window.location.href = "site.html";
+                return;
+            }
+
+            try {
+                const userRef = ref(db, `Users/${user.uid}`);
+                const userSnapshot = await get(userRef);
+
+                if (!userSnapshot.exists()) {
+                    console.log("No user data found.");
+                    return;
+                }
+
+                const username = userSnapshot.val().username;
+                const favBooksRef = ref(db, `favbooks/${username}`);
+                const favBooksSnapshot = await get(favBooksRef);
+
+                if (!favBooksSnapshot.exists()) {
+                    document.getElementById('recommendations').innerHTML = "No favorite books found.";
+                    console.log("No favorite books found.");
+                    return;
+                }
+
+                const favBooks = favBooksSnapshot.val();
+                my_list = Object.values(favBooks).map(book => ({
+                    bookTitle: book.bookTitle,
+                    bookAuthor: book.bookAuthor,
+                    bookType: book.bookType
+                }));
+
+                x = await Recommended(my_list, old_list);
+                console.log("Initial recommendations:", x);
+                Search(x);
+
+                // Attach event listener AFTER recommendations are loaded
+                document.getElementById('refresh').addEventListener('click', async function () {
+                    this.style.animation = 'spin 1s linear infinite';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 1000);
+
+                    old_list = x;
+                    x = await Recommended(my_list, old_list);
+                    console.log("Refreshed recommendations:", x);
+                    Search(x);
+                });
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+
+    </script>
+</head>
+
+<body>
+    <video autoplay muted loop id="bgVideo">
+        <source src="../SRC/libback.mp4" type="video/mp4">
+    </video>
+
+    <header>
+        <h1>Recommendations</h1>
+        <h2>Our AI recommendation tool</h2>
+    </header>
+    <div id="work">
+        <h2 class="refresh-heading">
+            Recommendations &nbsp;<i class="fas fa-sync-alt" id="refresh"></i>
+        </h2>
+        <div id="recommendations" class="book-grid" > Loading</div>
+    </div>
+    <footer>
+        <p id="Readc">© 2025 BookHive. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+/* === Horizontal Book Layout === */
+
+/* Body styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    height: auto; /* Allow body to grow based on content */
+    overflow-y: auto; /* Enable scrolling if content exceeds viewport */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* ===== Video Background ===== */
+#bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    filter: blur(3px);
+}
+
+/* Refresh Icon Styling */
+.refresh-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    color: #f39c12; /* Match header color */
+    margin: 0; /* Remove default margins */
+    font-size: 1.2rem; /* Consistent with other h2 */
+}
+
+/* Refresh Icon */
+#refresh {
+    font-size: 1.5rem; /* Increased size */
+    color: red; /* Match header color */
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth rotation */
+}
+
+/* Spinning Animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Header Styling */
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #f39c12;
+    text-align: center;
+    margin-top: 15px;
+}
+
+header h2 {
+    height: 50px;
+    margin: 5px 0 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* Main Work Section */
+#work {
+    margin-left: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to the top */
+    flex-direction: column;
+    height: auto; /* Allow it to grow based on content */
+    padding: 20px;
+    width: 95.5%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    margin-bottom: 20px;
+}
+
+/* Footer Styling */
+footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-top: 2px solid #f39c12;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+/* Book Info Styling for the Last Paragraph */
+.book-info p:last-of-type {
+    font-size: 0.75rem;
+    color: #f39c12;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+/* Book Grid Styling */
+.book-grid {
+    justify-items: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    gap: 20px;
+    padding: 5px;
+    width: 100%;
+    justify-items: center; /* Center the book cards */
+}
+
+/* Book Card Styling */
+.book-card {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly darker to improve text visibility */
+    min-height: 450px; /* Increased minimum height */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 300px; /* Fixed width */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content at the top */
+    align-items: center; /* Center content horizontally */
+    padding: 15px; /* Added more padding to prevent text from touching edges */
+}
+
+.book-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.book-card img {
+    width: 100%;
+    height: 300px; /* Increased image height */
+    object-fit: cover;
+}
+
+/* Book Info Styling */
+.book-info {
+    padding: 15px;
+    text-align: center; /* Center the text */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content to the top */
+    align-items: center; /* Center content horizontally */
+    flex-grow: 1; /* Make sure content grows to fill the remaining space */
+}
+
+/* Book Title */
+.book-info h3 {
+    font-size: 1.2rem; /* Increased font size for better readability */
+    margin: 0 0 10px;
+    color: white;
+    white-space: nowrap; /* Prevent title from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+    line-height: 1.4; /* Improve line height for better readability */
+}
+
+/* Book Description / Other Text */
+.book-info p {
+    font-size: 1rem; /* Increased font size */
+    margin: 5px 0;
+    color: white;
+    overflow: hidden; /* Prevent overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+    line-height: 1.5; /* More space between lines for easier reading */
+}
+
+/* Ensure the book type is always visible by adding some padding */
+.book-info p:last-of-type {
+    font-size: 0.85rem;
+    color: #f39c12;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px; /* Increased padding for readability */
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+/* Footer Styling */
+footer {
+    position: fixed; /* Make it fixed */
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-top: 2px solid #f39c12;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+
+footer p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .book-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on smaller screens */
+    }
+}
+
+@media (max-width: 1000px) {
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on even smaller screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .book-grid {
+        grid-template-columns: 1fr; /* 1 column on mobile screens */
+    }
+}

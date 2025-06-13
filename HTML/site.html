@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../CSS/site.css">
+    <script src="../JS/site.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>BookHive-Home</title>
+</head>
+<body>
+    <div id="header-section">
+    <img src="../SRC/circle.png" alt="Site Logo">&nbsp;&nbsp;&nbsp;<h1><font color="orange">BookHive</font></h1>
+        <div class="nav-container">
+            <nav>
+                <a class="bt" href="#welcome">Welcome</a>
+                <a class="bt" href="#rc">Reading Corner</a>
+                <a class="bt" href="#bb">BookBridge</a>
+                <a class="bt" href="#tt">TextTrace</a>
+             <a class="bt" href="#ct">Contact</a>
+            </nav>
+        </div>
+    </div>
+    <section id="welcome">
+        <div id="image-container">
+            <img src="../SRC/welcome.svg" alt="Description of SVG">
+            <div id="Description-wl">
+                <h1 class="dwc">
+                    <span style="color: #f39c12;">Welcome to BookHive – Your Gateway to Knowledge and Community</span>
+                </h1>
+                <h2 class="dwc">Discover, Read, Search and Grow with Us</h2>
+
+                <h3><p class="dwc">
+                At BookHive, we believe in the power of books to inspire, educate, and connect people 
+                <span id="dots">...</span>
+                    <span id="more" style="display: none;"> 
+                     Whether you're a passionate reader, a curious learner, or an aspiring writer, our platform is designed to help you dive deep into the world of literature and knowledge thanks to Artificial Intelligence. 
+                     Explore our vast collection of books, join a vibrant community of readers, and enhance your academic and creative skills.
+                </span>
+                </p></h3>
+
+            <button id="b1" onclick="myFunction()" style="font-size: 24px;">Read more</button>
+
+<script>
+    function myFunction() {
+        var dots = document.getElementById("dots");
+        var moreText = document.getElementById("more");
+        var btnText = document.getElementById("b1");
+
+        if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            moreText.style.display = "none";
+            btnText.innerHTML = "Read more";
+        } else {
+            dots.style.display = "none";
+            moreText.style.display = "inline";
+            btnText.innerHTML = "Read less";
+        }
+    }
+</script>
+
+        </div>
+    </div>
+    <div id="work">
+    <form id="login-form" name="f" action="#" method="POST">
+        <div class="form-group">
+            <label class="f1" for="email">Email</label>
+            <input class="f11" type="email" id="email" name="em" required placeholder="Enter your email">
+            <i class="email-icon"></i>
+        </div>
+        <div class="form-group">
+            <label class="f1" for="password">Password</label>
+            <input class="f11" type="password" id="password" name="pwd" required placeholder="Enter your password">
+            <i class="password-icon"></i>
+        </div>
+        <input type="button" id="b1" onclick="su()" value="Login">
+        <p class="forgot-password"><a href="#" id="forgot-password" aria-label="Reset your password">Forgot password?</a></p>
+        <p class="signup-prompt">Don't have an account? <a href="../HTML/signup.html" >Sign Up</a></p>
+    </form>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        // Your Firebase configuration
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+    const auth = getAuth(app); // Initialize Firebase Auth
+
+    // Make Firebase objects globally available
+    window.firebaseApp = app;
+    window.db = db;
+    window.ref = ref;
+    window.get = get;
+    window.auth = auth; // Add auth to global scope
+    window.signInWithEmailAndPassword = signInWithEmailAndPassword; 
+    window.sendPasswordResetEmail=sendPasswordResetEmail;
+    // Add sign-in function
+    // reset password
+     function checkEmail(email) {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return email && typeof email === 'string' && re.test(email.trim());
+  }
+  document.getElementById('forgot-password').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const email = prompt('Please enter your email to reset your password:');
+
+  if (!email) {
+    alert('Email is required. Please try again.');
+    return;
+  }
+
+  if (!checkEmail(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  try {
+    const usersRef = ref(db, 'Users');
+    const snapshot = await get(usersRef);
+
+    if (snapshot.exists()) {
+      const users = snapshot.val();
+      const userExists = Object.values(users).some(user => user.email === email);
+
+      if (!userExists) {
+        alert('No account found with this email.');
+        return;
+      }
+
+      // Email exists, send reset
+      await sendPasswordResetEmail(auth, email);
+      alert('A password reset link has been sent to your email.');
+    } else {
+      alert('No users found in the database.');
+    }
+  } catch (error) {
+    console.error(error.code, error.message);
+    alert('Error sending reset email: ' + error.message);
+  }
+});
+</script>
+</div>
+</section>
+
+    <section id="rc">
+            <h2 class="dwc"><p style="color: #f39c12; text-align: center; font-size:50px;">Reading corner</p></h2>
+            <h3><p style="color: white; font-size:40px;" id="lib">Browse huge library filled with popular
+             and exclusive books</p></h3>
+            <!-- scroll books-->
+            <div class="book-carousel">
+                <button class="scroll-button left" onclick="scrollCarouselLeft()">&#8249;</button>
+                    <div class="wrapper" id="carousel">
+                        <div class="item" onclick="loginalert()"><img src="../SRC/tkm.jpg"> </div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/abhot.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/ah.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/alc.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/hp.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/pap.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/tgb.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/tgr.jpg" ></div>
+                        <div class="item" onclick="loginalert()"><img src="../SRC/sp.jpg"></div>
+                    </div>
+                    <button class="scroll-button right" onclick="scrollRight()">&#8250;</button>
+            </div>
+            <script>
+                const carousel = document.getElementById("carousel");
+                const items = document.querySelectorAll(".item");
+
+                function updateItemWidth() {
+                    return items[0].offsetWidth + 10; // Include margin for accurate width
+                }
+
+                function scrollCarouselLeft() {
+                    const itemWidth = carousel.offsetWidth / 3; // Width of a single item
+                    const lastItem = carousel.lastElementChild;
+
+                    // Move the last item to the front without transition
+                    carousel.style.transition = "none";
+                    carousel.insertBefore(lastItem, carousel.firstElementChild);
+                    carousel.style.transform = `translateX(-${itemWidth}px)`;
+
+                    // Smoothly reset the position
+                    setTimeout(() => {
+                        carousel.style.transition = "transform 0.1s ease";
+                        carousel.style.transform = "translateX(0)";
+                    }, 10);
+                }
+                function scrollRight() {
+                    const itemWidth = updateItemWidth();
+                    carousel.style.transition = "transform 0.5s ease";
+                    carousel.style.transform = `translateX(-${itemWidth}px)`;
+
+                    setTimeout(() => {
+                        carousel.style.transition = "none";
+                        const firstItem = carousel.firstElementChild;
+                        carousel.appendChild(firstItem);
+                        carousel.style.transform = "translateX(0)";
+                    }, 500);
+                }
+                function loginalert() {
+                    let messageBox = document.createElement("div");
+                    messageBox.innerHTML = `
+                        <div style="
+                            position: fixed; 
+                            top: 50%; left: 50%; 
+                            transform: translate(-50%, -50%);
+                            background: white; 
+                            padding: 20px; 
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                            border-radius: 10px;
+                            text-align: center;
+                            z-index: 1000;
+                        ">
+                            <p style="color: black; font-size: 18px;">Please log in to access this book and unlock the full experience!</p>
+                            <button onclick="this.parentElement.remove(); scrollToWelcome();" style="padding: 10px 20px; background: #f39c12; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 5px;">OK</button>
+                        </div>
+                    `;
+                    document.body.appendChild(messageBox);
+                }
+
+                function scrollToWelcome() {
+                    const welcomeElement = document.getElementById("welcome");
+                    if (welcomeElement) {
+                        welcomeElement.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
+                    }
+                }
+           </script>
+    </section>
+   <section id="bb">
+    <h2 class="dwc"><p>Book Bridge</p></h2>
+    <h3><p id="lib">Discover the ideal books for your research with intelligent, personalized recommendations tailored to your chosen subject!</p></h3>
+    <form name="search" action="../PHP/bookbridge.php" method="post" target="_blank">
+        <input type="text" name="research" placeholder="Describe your research topic...">
+        <i class="fas fa-search search-icon"></i>
+    </form>
+</section>
+    <section id="tt">
+        <h2 class="dwc"><p>Text Trace</p></h2>
+        <h3><p id="trace-desc">Trace quotes to their source and sharpen your research skills with our intuitive source-finding tool!</p></h3>
+        <form name="text-trace" action="../PHP/texttrace.php" method="post" target="_blank">
+            <input type="text" name="quote-input" id="quote-input" placeholder="Put your quote here ..." >
+            <i class="fas fa-search search-icon"></i>
+        </form>
+        <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.forms["text-trace"];
+    const input = form.elements["quote-input"];
+    const searchIcon = form.querySelector(".search-icon");
+
+    // Real-time red border for short input
+    input.addEventListener("input", function () {
+        if (this.value.length > 0 && this.value.length <= 4) {
+            this.style.border = "2px solid red";
+        } else {
+            this.style.border = "";
+        }
+    });
+
+    // Validation function
+    function validateQuote(event) {
+        if (input.value.length <= 4) {
+            event.preventDefault();
+            alert("Error: Quote must contain more than 4 characters.");
+            input.focus();
+            return false;
+        }
+        return true;
+    }
+
+    // Handle form submit (e.g. Enter key)
+    form.addEventListener("submit", function (event) {
+        validateQuote(event);
+    });
+
+    // Handle click on search icon
+    searchIcon.addEventListener("click", function (event) {
+        if (validateQuote(event)) {
+            // Optional: visual feedback
+            setTimeout(() => {
+                form.submit();
+            }, 1000);
+        }
+    });
+});
+
+</script>
+
+    </section>
+    <section id="ct">
+    <h2 class="dwc"><p>Contact Us</p></h2>
+    <h3><p id="contact-desc">Have questions or feedback? Reach out to us!</p></h3>
+    
+    <form id="contact-form" action="" method="post">
+    <div class="form-groupe">
+        <label for="name"><i class="fas fa-user"></i> Name</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your name">
+    </div>
+
+    <div class="form-groupe">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="emails" name="email" required placeholder="Enter your email"> <!-- Fixed ID here -->
+    </div>
+
+    <div class="form-groupe">
+        <label for="message"><i class="fas fa-comment"></i> Message</label>
+        <textarea id="message" name="message" rows="4" required placeholder="Enter your message"></textarea>
+    </div>
+
+    <button type="submit" id="contact-submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+</form>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+        //put your Firebase configuration here
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+
+    // Handle contact form submission
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('emails').value;
+    const message = document.getElementById('message').value;
+
+    // Reference to the feedback data in Firebase
+    const feedbackRef = ref(db, 'feedbacks');
+    
+    // Check if the user has already submitted feedback using their email
+    window.get(feedbackRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const feedbacks = snapshot.val();
+                let alreadySubmitted = false;
+
+                // Loop through all feedback entries
+                for (let key in feedbacks) {
+                    const feedback = feedbacks[key];
+                    if (feedback.email === email) {
+                        alreadySubmitted = true;
+                        break;
+                    }
+                }
+
+                // If the user already submitted feedback, show an alert
+                if (alreadySubmitted) {
+                    alert("You've already submitted feedback.");
+                    return; // Stop the form submission
+                } else {
+                    // Proceed with saving the new feedback
+                    saveFeedback(name, email, message);
+                }
+            } else {
+                // No feedbacks yet, proceed with saving the new feedback
+                saveFeedback(name, email, message);
+            }
+        })
+        .catch((error) => {
+            console.error("Error checking feedback: ", error);
+            alert("There was an error checking your previous feedback. Please try again.");
+        });
+});
+
+// Function to save feedback
+function saveFeedback(name, email, message) {
+    const feedbackRef = ref(db, 'feedbacks/' + Date.now()); // Using timestamp as a unique ID
+    set(feedbackRef, {
+        name: name,
+        email: email,
+        message: message,
+        timestamp: new Date().toISOString()
+    })
+    .then(() => {
+        alert('Your feedback has been submitted successfully.');
+        document.getElementById('contact-form').reset(); // Reset the form
+    })
+    .catch((error) => {
+        console.error("Error saving feedback: ", error);
+        alert('There was an error submitting your feedback. Please try again.');
+    });
+}
+
+</script>
+    
+    <div id="contact-info">
+        <p><i class="fas fa-map-marker-alt"></i> Address:  Avenue de l'environnement Monastir -TUNISIE &nbsp;&nbsp;&nbsp; ||</p>
+        <p><i class="fas fa-phone"></i> Phone: +216 54 970 155 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;||</p>&nbsp;&nbsp;&nbsp;&nbsp;
+        <p><i class="fas fa-envelope"></i> Email: benothmennezih@gmail.com</p>
+    </div>
+</section>
+    <footer>
+        <p id="Readc">&copy; 2025 BookHive. All rights reserved.</p>
+    </footer>
+</body>
+</html>

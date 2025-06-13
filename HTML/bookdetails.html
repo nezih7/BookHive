@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHive-Book Details</title>
+    <link rel="icon" type="image/x-icon" href="../SRC/circle.png">
+    <link rel="stylesheet" href="../CSS/bookdetails.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+
+        const firebaseConfig = {
+           //put your Firebase config here
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        window.sub=sub;
+        window.addtofavourites=addtofavourites;
+        onAuthStateChanged(auth, (user) => {
+            if (!user || !user.emailVerified) {
+                window.location.href = "site.html";
+            } else {
+                console.log("User is signed in and email is verified.");
+            }
+        });
+        function sub() {
+    const userOpinion = document.getElementById("user-opinion").value.trim();
+    const bookTitle = document.getElementById("book-title").textContent;
+    const bookAuthor = document.getElementById("book-author").textContent;
+    const user = auth.currentUser;
+
+    if (!user) {
+        alert("User not logged in.");
+        return;
+    }
+
+    if (userOpinion === "") {
+        alert("Please write your opinion before submitting.");
+        return;
+    }
+
+    const dbRef = ref(db);
+
+    // Get the username using UID
+    get(child(dbRef, `Users/${user.uid}/username`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const username = snapshot.val();
+
+            const newReviewRef = push(ref(db, "bookReviews"));
+
+            set(newReviewRef, {
+                bookTitle: bookTitle,
+                bookAuthor: bookAuthor,
+                username: username,
+                opinion: userOpinion,
+                timestamp: new Date().toISOString()
+            }).then(() => {
+                alert("Your opinion has been submitted!");
+                document.getElementById("user-opinion").value = ""; // Clear textarea
+            }).catch((error) => {
+                console.error("Error submitting opinion:", error);
+                alert("Failed to submit your opinion.");
+            });
+
+        } else {
+            alert("Username not found in the database.");
+        }
+    }).catch((error) => {
+        console.error("Error fetching username:", error);
+        alert("An error occurred while retrieving your username.");
+    });
+}
+async function loadReviews() {
+    const bookTitle = document.getElementById("book-title").textContent;
+    const bookAuthor = document.getElementById("book-author").textContent;
+    const reviewsContainer = document.createElement("div");
+    reviewsContainer.id = "reviews-container";
+
+    // Add the reviews container to the page
+    const bookDetailsDiv = document.querySelector(".book-details");
+    bookDetailsDiv.appendChild(reviewsContainer);
+
+    // Add a loading message
+    reviewsContainer.innerHTML = "<p>Loading reviews...</p>";
+
+    try {
+        const dbRef = ref(db, "bookReviews");
+        const snapshot = await get(dbRef);
+
+        if (snapshot.exists()) {
+            const reviews = Object.values(snapshot.val()).filter(
+                review => review.bookTitle === bookTitle && review.bookAuthor === bookAuthor
+            );
+
+            if (reviews.length > 0) {
+                // Generate HTML for reviews
+                reviewsContainer.innerHTML = reviews
+                    .map(review => `
+                        <div class="review">
+                            <p><strong>${review.username}:</strong> ${review.opinion}</p>
+                            <p><em>${new Date(review.timestamp).toLocaleString()}</em></p>
+                        </div>
+                    `)
+                    .join("");
+            } else {
+                reviewsContainer.innerHTML = "<p>No reviews found for this book.</p>";
+            }
+        } else {
+            reviewsContainer.innerHTML = "<p>No reviews found for this book.</p>";
+        }
+    } catch (error) {
+        console.error("Error fetching reviews:", error);
+        reviewsContainer.innerHTML = "<p>Error loading reviews. Please try again later.</p>";
+    }
+}
+
+// Call the function to load reviews when the page loads
+window.onload = loadReviews;
+//add to favourites function
+async function addtofavourites() {
+    const user = auth.currentUser;
+
+    if (!user) {
+        alert("User not logged in. Please log in to add to favourites.");
+        return;
+    }
+
+    const bookData = JSON.parse(localStorage.getItem("selectedBook"));
+
+    if (!bookData) {
+        alert("No book data found. Please select a book to add to favourites.");
+        return;
+    }
+
+    const dbRef = ref(db);
+
+    try {
+        // Get username
+        const usernameSnapshot = await get(child(dbRef, `Users/${user.uid}/username`));
+        if (!usernameSnapshot.exists()) {
+            alert("Username not found in the database.");
+            return;
+        }
+
+        const username = usernameSnapshot.val();
+        const favsRef = ref(db, `favbooks/${username}`);
+        const favsSnapshot = await get(favsRef);
+        
+        let alreadyExists = false;
+        let existingKey = null;
+
+        if (favsSnapshot.exists()) {
+            favsSnapshot.forEach((childSnapshot) => {
+                const fav = childSnapshot.val();
+                if (
+    (fav.bookTitle === bookData.title || fav.bookTitle === bookData.bookTitle) &&
+    (fav.bookAuthor === bookData.author || fav.bookAuthor === bookData.bookAuthor)
+) {
+    alreadyExists = true;
+    existingKey = childSnapshot.key;
+}
+
+            });
+        }
+        function sanitizeText(text) {
+    if (typeof text !== 'string') return '';
+    
+    // Allow Arabic, English, digits, space, dot, comma, and escape quotes safely
+    return text
+        .replace(/\\/g, '\\\\')     // escape backslashes
+        .replace(/"/g, '\\"')       // escape double quotes
+        .replace(/'/g, "\\'")       // escape single quotes
+        .replace(/[^\u0600-\u06FFa-zA-Z0-9 .,]/g, ''); // allow only safe characters
+}
+     if (alreadyExists && existingKey) {
+            const confirmDelete = confirm("You already added this book to your favourite list. Do you want to delete it?");
+            if (confirmDelete) {
+                await set(ref(db, `favbooks/${username}/${existingKey}`), null);
+                alert("Book removed from favourites!");
+            } else {
+                // User cancelled
+                return;
+            }
+        } else {
+            // Add to favorites
+            const newFavRef = push(favsRef);
+            await set(newFavRef, {
+                bookTitle: sanitizeText(bookData.title), // Corrected to use sanitizeText function
+                bookAuthor: sanitizeText(bookData.author), // Corrected to use sanitizeText function
+                bookFileURL: bookData.bookFileURL,
+                description: sanitizeText(bookData.description), // Sanitize description
+                bookType: sanitizeText(bookData.type), // Corrected to use sanitizeText function
+                bookCover: bookData.coverImageURL || bookData.coverUrl,
+                timestamp: new Date().toISOString()
+            });
+            alert("Book added to favourites!");
+        }
+
+    } catch (error) {
+        console.error("Error managing favourites:", error);
+        alert("you already unnaded this book from your favourite list.");
+    }
+}
+
+
+</script>
+    
+</head>
+<body>
+    <video autoplay muted loop id="bgVideo">
+        <source src="../SRC/libback.mp4" type="video/mp4">
+    </video>
+    <div class="book-details">
+        <img id="book-cover" alt="Book Cover">
+        <div class="title-container">
+            <h1 id="book-title"></h1>
+        </div>
+        <div class="info-pair">
+            <h4>Type of the book:</h4>
+            <p id="book-type"></p>
+        </div>
+        <div class="info-pair">
+            <h4>Description:</h4>
+            <p id="book-description"></p>
+        </div>
+        <div class="info-pair">
+            <h4>Author:</h4>
+            <h2 id="book-author"></h2>
+        </div>
+        <div class="info-pair">
+            <h4>Link:</h4>
+            <a id="book-link" href="#" target="_blank" class="read-btn">Read Book</a>
+            <button 
+                            style="padding: 10px 20px; background-color: red; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background-color 0.3s, transform 0.2s;"
+                            onclick=" addtofavourites()"
+                            onmouseover="this.style.backgroundColor='red'; this.style.transform='scale(1.1)';"
+                            onmouseout="this.style.backgroundColor='red'; this.style.transform='scale(1)';">
+                            ♥ Add to favourites
+            </button>
+        </div>
+        <div class="opinion-container">
+            <h4>Your Opinion:</h4>
+            <div class="opinion-input">
+                <textarea id="user-opinion" placeholder="Write your opinion here..."></textarea>
+                <button id="submit-opinion" class="submit-btn" onclick="sub()">Submit</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p id="Readc">© 2025 BookHive. All rights reserved.</p>
+    </footer>
+    <script>
+        // Retrieve book data from localStorage
+        const bookData = JSON.parse(localStorage.getItem('selectedBook'));
+
+        if (bookData) {
+    // Populate the book details
+    
+    document.getElementById("book-cover").src = bookData.bookCover || bookData.coverUrl || bookData.coverImageURL || "https://via.placeholder.com/120x180?text=No+Cover";
+    document.getElementById("book-cover").alt = bookData.title;
+    document.getElementById("book-title").textContent = bookData.title|| bookData.bookTitle || "Unknown Title";
+    document.getElementById("book-author").textContent = bookData.author|| bookData.bookAuthor || "Unknown Author";
+    document.getElementById("book-description").textContent = bookData.description;
+    document.getElementById("book-link").href = bookData.bookFileURL;
+    document.getElementById("book-type").textContent =bookData.bookType|| bookData.type || "Unknown";
+} else {
+    // Handle the case where no book data is found
+    document.body.innerHTML = "<p>Error: No book data found.</p>";
+}
+        window.onload = function () {
+    const book = JSON.parse(localStorage.getItem("selectedBook"));
+
+    if (!book) {
+        document.getElementById("book-details").innerHTML = "<p>Book details not found.</p>";
+        return;
+    }
+
+    document.getElementById("bookDetails").innerHTML = `
+        <div class="book-detail-card">
+            <img src="${book.coverUrl}" alt="Book Cover">
+            <h2>${book.title}</h2>
+            <h4>${book.author}</h4>
+            <p>${book.description}</p>
+            <a href="${book.bookFileURL}" target="_blank" class="read-link">Read PDF</a>
+        </div>
+    `;
+};
+
+    </script>
+</body>
+</html>
